@@ -70,7 +70,8 @@ namespace _4Gewinnt_Gui
         {
             panel = new Panel[Y,X];
             button = new Button[X];
-            
+            lb = new Label[Y, X];
+
             int bottom = 30;
             int panelHeight = 60;
             int panelWidth = 60;
@@ -97,7 +98,8 @@ namespace _4Gewinnt_Gui
                 for (z = 0; z < Y; z++)
                 {
                     panel[z,s] = new Panel();
-                    
+                    lb[z, s] = new Label();
+
                     //panel[z,s].Name = "panel" + panelId;
                     this.Controls.Add(panel[z, s]);             
                     panel[z, s].Left = panelLeft;
@@ -105,6 +107,7 @@ namespace _4Gewinnt_Gui
                     panel[z, s].Height = panelHeight;
                     panel[z, s].Top = this.ClientSize.Height - panel[z, s].Height - bottom;
                     panel[z, s].BorderStyle = BorderStyle.FixedSingle;
+                    panel[z, s].Controls.Add(lb[z, s]);
                     bottom += 60;
                     panelId++;
                 }
@@ -128,35 +131,110 @@ namespace _4Gewinnt_Gui
 
         private void Spielsteine()
         {
-            lb = new Label[Y, X];
-
             for (int s = 0; s < X; s++)
             {
                 for (int z = 0; z < Y; z++)
                 {
-                    lb[z, s] = new Label();
-                    panel[z, s].Controls.Add(lb[z, s]);
-                    lb[z, s].Text = Convert.ToString(feld[z, s]);
+                    //lb[z, s].Text = Convert.ToString(feld[z, s]);
+                    if (feld[z, s] == 1)
+                    {
+                        panel[z, s].BackColor = Color.Red;
+                    } else if(feld[z, s] == 2)
+                    {
+                        panel[z, s].BackColor = Color.Blue;
+                    } else
+                    {
+                        panel[z, s].BackColor = Color.Transparent;
+                    }
                 }
             }
         }
 
+        //User-Input: Neustart ja/nein
+        private void Neustart()
+        {
+            Spielsteine();
+            if (spieler1Won)
+            {
+                label1.Text = "Spieler 1 hat gewonnen!";
+            }
+            else if (spieler2Won)
+            {
+                label1.Text = "Spieler 2 hat gewonnen!";
+            }
+            else
+            {
+                label1.Text = "unentschieden!";
+            }
+
+            DialogResult neustart = MessageBox.Show("Neustart?", "Victory!", MessageBoxButtons.YesNo);
+
+
+                if (neustart == DialogResult.Yes)
+                {
+                    for (int row = Y - 1; row >= 0; row--)
+                    {
+                        for (int col = 0; col < X; col++)
+                        {
+                            feld[row, col] = 0;
+                        }
+                    }
+                    if (spieler1Won)
+                    {
+                        spieler1Won = false;
+                    }
+                    else if (spieler2Won)
+                    {
+                        spieler2Won = false;
+                    }
+                    else
+                    {
+                        unentschieden = false;
+                    }
+
+                    spieler.SwitchPlayer();
+
+                }
+                else if (neustart == DialogResult.No)
+                {
+                    Environment.Exit(0);
+                }
+                
+            
+            //neustart = null;
+            Ctr.setViewData(feld, spieler1Won, spieler2Won, unentschieden, player1, player2, outOfBounds, spalteVoll);
+            Ctr.updateModelData();
+        }
+
         private void Game()
         {
+            Ctr.Spielen(gewSpalte);
+            getControllerData();
+
+            if (spalteVoll == true)
+            {
+                MessageBox.Show("Diese Spalte ist schon voll!");
+                spalteVoll = false;
+            }
+            
+            Ctr.setViewData(feld, spieler1Won, spieler2Won, unentschieden, player1, player2, outOfBounds, spalteVoll);
+            Ctr.updateModelData();
+
+            if (spieler1Won || spieler2Won || unentschieden)
+            {
+                Neustart();
+            }
+
+            Spielsteine();
+
             if (player1 == true)
             {
                 label1.Text = "Spieler 1: wähle eine Spalte!";
-            } else
+            }
+            else
             {
                 label1.Text = "Spieler 2: wähle eine Spalte!";
             }
-                
-            Ctr.Spielen(gewSpalte);
-            getControllerData();
-            Ctr.setViewData(feld, spieler1Won, spieler2Won, unentschieden, player1, player2, outOfBounds, spalteVoll);
-            Ctr.updateModelData();
-            Spielsteine();
-            
         }
     }
 }
