@@ -46,7 +46,6 @@
             this.label1.Size = new System.Drawing.Size(174, 32);
             this.label1.TabIndex = 0;
             this.label1.Text = "Spiel starten";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -114,7 +113,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Vier Gewinnt";
-            this.ResumeLayout(false);
+            //this.ResumeLay(false);
             this.PerformLayout();
 
         }

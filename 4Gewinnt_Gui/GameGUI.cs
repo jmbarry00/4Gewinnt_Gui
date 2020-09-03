@@ -25,15 +25,11 @@ namespace _4Gewinnt_Gui
         int[,] feld;
         Panel[,] panel;
         Button[] button;
-        Label[,] lb;
-
         int gewSpalte;
-        //string neustart;
 
         bool spieler1Won;
         bool spieler2Won;
         bool unentschieden;
-        bool outOfBounds;
         bool spalteVoll;
 
         public GameGUI(GameController ctr)
@@ -45,7 +41,6 @@ namespace _4Gewinnt_Gui
             X = Ctr.anzSpalten;
             spieler = Ctr.spieler;
             spielfeld = Ctr.spielfeld;
-            feld = Ctr.getFeld();
         }
 
         public void Playing()
@@ -62,21 +57,18 @@ namespace _4Gewinnt_Gui
             unentschieden = Ctr.getUnentschieden();
             player1 = Ctr.getPlayer1();
             player2 = Ctr.getPlayer2();
-            outOfBounds = Ctr.getOutOfBounds();
             spalteVoll = Ctr.getSpalteVoll();
         }
 
         private void GameGUI_Load(object sender, EventArgs e)
         {
-            panel = new Panel[Y,X];
-            button = new Button[X];
-            lb = new Label[Y, X];
+            panel = new Panel[Y, X];    //Spielfeld besteht aus Panels
+            button = new Button[X];     //Buttons über jeder Spalte
 
             int bottom = 30;
             int panelHeight = 60;
             int panelWidth = 60;
             int panelLeft = 30;
-            int panelId = 0;
             this.Height = Y * panelHeight + 200;
             this.Width = X * panelWidth + 100;
             int s;
@@ -85,7 +77,7 @@ namespace _4Gewinnt_Gui
             for (s = 0; s < X; s++)
             {
                 z = 0;
-                panel[z,s] = new Panel();
+                panel[z, s] = new Panel();
                 button[s] = new Button();
                 this.Controls.Add(button[s]);
                 button[s].Left = panelLeft;
@@ -97,38 +89,30 @@ namespace _4Gewinnt_Gui
 
                 for (z = 0; z < Y; z++)
                 {
-                    panel[z,s] = new Panel();
-                    lb[z, s] = new Label();
+                    panel[z, s] = new Panel();
 
-                    //panel[z,s].Name = "panel" + panelId;
-                    this.Controls.Add(panel[z, s]);             
+                    this.Controls.Add(panel[z, s]);
                     panel[z, s].Left = panelLeft;
                     panel[z, s].Width = panelWidth;
                     panel[z, s].Height = panelHeight;
                     panel[z, s].Top = this.ClientSize.Height - panel[z, s].Height - bottom;
                     panel[z, s].BorderStyle = BorderStyle.FixedSingle;
-                    panel[z, s].Controls.Add(lb[z, s]);
                     bottom += 60;
-                    panelId++;
                 }
                 panelLeft += panelWidth;
                 bottom = 30;
             }
-            //panel0.BackColor = Color.Red;
-            
         }
 
+        //Spalte an Programm übergeben
         private void ButtonClick(object sender, EventArgs e)
         {
-            //To Do - Click Event
             Button btn = sender as Button;
-            //MessageBox.Show(btn.Name + ", " + "Button Clicked");
             gewSpalte = Convert.ToInt32(btn.Name);
-
             Playing();
-
         }
 
+        //Spieler 1 => Roter Spielstein, Spieler 2 => Blauer Spielstein
         private void Spielsteine()
         {
             for (int s = 0; s < X; s++)
@@ -139,10 +123,12 @@ namespace _4Gewinnt_Gui
                     if (feld[z, s] == 1)
                     {
                         panel[z, s].BackColor = Color.Red;
-                    } else if(feld[z, s] == 2)
+                    }
+                    else if (feld[z, s] == 2)
                     {
                         panel[z, s].BackColor = Color.Blue;
-                    } else
+                    }
+                    else
                     {
                         panel[z, s].BackColor = Color.Transparent;
                     }
@@ -170,39 +156,38 @@ namespace _4Gewinnt_Gui
             DialogResult neustart = MessageBox.Show("Neustart?", "Victory!", MessageBoxButtons.YesNo);
 
 
-                if (neustart == DialogResult.Yes)
+            if (neustart == DialogResult.Yes)
+            {
+                for (int row = Y - 1; row >= 0; row--)
                 {
-                    for (int row = Y - 1; row >= 0; row--)
+                    for (int col = 0; col < X; col++)
                     {
-                        for (int col = 0; col < X; col++)
-                        {
-                            feld[row, col] = 0;
-                        }
+                        feld[row, col] = 0;
                     }
-                    if (spieler1Won)
-                    {
-                        spieler1Won = false;
-                    }
-                    else if (spieler2Won)
-                    {
-                        spieler2Won = false;
-                    }
-                    else
-                    {
-                        unentschieden = false;
-                    }
-
-                    spieler.SwitchPlayer();
-
                 }
-                else if (neustart == DialogResult.No)
+                if (spieler1Won)
                 {
-                    Environment.Exit(0);
+                    spieler1Won = false;
                 }
-                
-            
+                else if (spieler2Won)
+                {
+                    spieler2Won = false;
+                }
+                else
+                {
+                    unentschieden = false;
+                }
+
+                spieler.SwitchPlayer();
+
+            }
+            else if (neustart == DialogResult.No)
+            {
+                Environment.Exit(0);
+            }
+
             //neustart = null;
-            Ctr.setViewData(feld, spieler1Won, spieler2Won, unentschieden, player1, player2, outOfBounds, spalteVoll);
+            Ctr.setViewData(feld, spieler1Won, spieler2Won, unentschieden, player1, player2, spalteVoll);
             Ctr.updateModelData();
         }
 
@@ -216,8 +201,8 @@ namespace _4Gewinnt_Gui
                 MessageBox.Show("Diese Spalte ist schon voll!");
                 spalteVoll = false;
             }
-            
-            Ctr.setViewData(feld, spieler1Won, spieler2Won, unentschieden, player1, player2, outOfBounds, spalteVoll);
+
+            Ctr.setViewData(feld, spieler1Won, spieler2Won, unentschieden, player1, player2, spalteVoll);
             Ctr.updateModelData();
 
             if (spieler1Won || spieler2Won || unentschieden)

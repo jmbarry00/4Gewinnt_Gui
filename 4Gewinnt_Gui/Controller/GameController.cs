@@ -22,7 +22,6 @@ namespace _4Gewinnt_Gui.Controller
         bool unentschieden;
         bool player1;
         bool player2;
-        bool outOfBounds;
         bool spalteVoll;
 
         public GameController(int Zeilen, int Spalten)
@@ -53,7 +52,6 @@ namespace _4Gewinnt_Gui.Controller
             unentschieden = spielfeld.unentschieden;
             player1 = spieler.player1;
             player2 = spieler.player2;
-            outOfBounds = spielfeld.outOfBounds;
             spalteVoll = spielfeld.spalteVoll;
         }
 
@@ -65,7 +63,6 @@ namespace _4Gewinnt_Gui.Controller
             spielfeld.unentschieden = unentschieden;
             spieler.player1 = player1;
             spieler.player2 = player2;
-            spielfeld.outOfBounds = outOfBounds;
             spielfeld.spalteVoll = spalteVoll;
         }
 
@@ -82,11 +79,6 @@ namespace _4Gewinnt_Gui.Controller
         public bool getPlayer2()
         {
             return player2;
-        }
-
-        public bool getOutOfBounds()
-        {
-            return outOfBounds;
         }
 
         public bool getSpalteVoll()
@@ -111,7 +103,7 @@ namespace _4Gewinnt_Gui.Controller
 
 
 
-        public void setViewData(int[,] feld, bool spieler1Won, bool spieler2Won, bool unentschieden, bool player1, bool player2, bool outOfBounds, bool spalteVoll)
+        public void setViewData(int[,] feld, bool spieler1Won, bool spieler2Won, bool unentschieden, bool player1, bool player2, bool spalteVoll)
         {
             this.feld = feld;
             this.spieler1Won = spieler1Won;
@@ -119,7 +111,6 @@ namespace _4Gewinnt_Gui.Controller
             this.unentschieden = unentschieden;
             this.player1 = player1;
             this.player2 = player2;
-            this.outOfBounds = outOfBounds;
             this.spalteVoll = spalteVoll;
         }
 

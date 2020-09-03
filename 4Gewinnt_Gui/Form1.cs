@@ -22,11 +22,7 @@ namespace _4Gewinnt_Gui
             InitializeComponent();
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-            
-        }
-
+        //Anzahl Zeilen und Spalten dem Programm übergeben
         private void button1_Click(object sender, EventArgs e)
         {            
             anzZeilen = Convert.ToInt32(tbZeilen.Text);

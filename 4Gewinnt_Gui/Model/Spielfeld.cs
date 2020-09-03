@@ -21,7 +21,6 @@ namespace _4Gewinnt_Gui.Model
         public bool spieler1Won = false;
         public bool spieler2Won = false;
         public bool unentschieden = false;
-        public bool outOfBounds = false;
         public bool spalteVoll = false;
 
         //Konstruktor für das Spielfeld
@@ -37,30 +36,22 @@ namespace _4Gewinnt_Gui.Model
         {
             int y = 0;
 
-            //gewählte Spalte darf nicht höher als Anzahl Spalten sein
-            if (x < SpaltenX)
+            //bei besetzem Feld das nächst freie wählen
+            while (IstFeldBesetzt(y, x) == true)
             {
-                //bei besetzem Feld das nächst freie wählen
-                while (IstFeldBesetzt(y, x) == true)
+                //darf nicht weiter als Anzahl Zeilen gehen
+                if (y < ZeilenY - 1)
                 {
-                    //darf nicht weiter als Anzahl Zeilen gehen
-                    if (y < ZeilenY - 1)
-                    {
-                        y++;
-                    }
-                    else
-                    {
-                        spalteVoll = true;
-                        return;
-                    }
-
+                    y++;
                 }
+                else
+                {
+                    spalteVoll = true;
+                    return;
+                }
+
             }
-            else
-            {
-                outOfBounds = true;
-                return;
-            }
+
 
             //wenn Spieler 1 an der Reihe, dann Feld auf 1 setzen, schauen ob es Gewinner gibt und Spieler wechseln
             if (spieler.player1 == true)
