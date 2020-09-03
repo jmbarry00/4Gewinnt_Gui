@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _4Gewinnt_Gui.Controller;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +15,7 @@ namespace _4Gewinnt_Gui
     {
         int anzZeilen = 0;
         int anzSpalten = 0;
+        GameController Ctr;
 
         public Form1()
         {
@@ -22,16 +24,16 @@ namespace _4Gewinnt_Gui
 
         private void label1_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
-            GameGUI gui = new GameGUI();
+        {            
             anzZeilen = Convert.ToInt32(tbZeilen.Text);
             anzSpalten = Convert.ToInt32(tbSpalten.Text);
-            gui.Show();
+            Ctr = new GameController(anzZeilen, anzSpalten);
             this.Hide();
         }
+
     }
 }
