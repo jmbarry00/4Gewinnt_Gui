@@ -22,13 +22,33 @@ namespace _4Gewinnt_Gui
             InitializeComponent();
         }
 
+        private void GameClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
         //Anzahl Zeilen und Spalten dem Programm übergeben
         private void button1_Click(object sender, EventArgs e)
-        {            
-            anzZeilen = Convert.ToInt32(tbZeilen.Text);
-            anzSpalten = Convert.ToInt32(tbSpalten.Text);
-            Ctr = new GameController(anzZeilen, anzSpalten);
-            this.Hide();
+        {   
+            try
+            {
+                anzZeilen = Convert.ToInt32(tbZeilen.Text);
+                anzSpalten = Convert.ToInt32(tbSpalten.Text);
+                if (anzZeilen >= 5 && anzSpalten >= 5)
+                {
+                    Ctr = new GameController(anzZeilen, anzSpalten);
+                    this.Hide();
+                } else
+                {
+                    tbSpalten.Text = "";
+                    tbZeilen.Text = "";
+                    MessageBox.Show("Wähle mindestens 5 Zeilen und Spalten!");
+                }
+            } 
+            catch (FormatException fe)
+            {
+                MessageBox.Show(fe.Message);
+            }
         }
 
     }

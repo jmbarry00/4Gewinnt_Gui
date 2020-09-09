@@ -43,6 +43,11 @@ namespace _4Gewinnt_Gui
             spielfeld = Ctr.spielfeld;
         }
 
+        private void GameClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
         public void Playing()
         {
             getControllerData();
@@ -139,6 +144,7 @@ namespace _4Gewinnt_Gui
         //User-Input: Neustart ja/nein
         private void Neustart()
         {
+            String endStatus;
             Spielsteine();
             if (spieler1Won)
             {
@@ -153,7 +159,15 @@ namespace _4Gewinnt_Gui
                 label1.Text = "unentschieden!";
             }
 
-            DialogResult neustart = MessageBox.Show("Neustart?", "Victory!", MessageBoxButtons.YesNo);
+            if (label1.Text == "unentschieden!")
+            {
+                endStatus = "Draw!";
+            } else
+            {
+                endStatus = "Victory!";
+            }
+
+            DialogResult neustart = MessageBox.Show("Neustart?", endStatus, MessageBoxButtons.YesNo);
 
 
             if (neustart == DialogResult.Yes)

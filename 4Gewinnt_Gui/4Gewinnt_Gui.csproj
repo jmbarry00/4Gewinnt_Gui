@@ -53,10 +53,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameGUI.cs">
+    <Compile Include="View\GameGUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GameGUI.Designer.cs">
+    <Compile Include="View\GameGUI.Designer.cs">
       <DependentUpon>GameGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Spieler.cs" />
@@ -67,7 +67,7 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GameGUI.resx">
+    <EmbeddedResource Include="View\GameGUI.resx">
       <DependentUpon>GameGUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
